@@ -1,10 +1,10 @@
 package com.example;
 
-import ch.qos.logback.core.net.server.Client;
-import com.example.Bank.Bank;
+import com.example.Bank.Client;
 import com.example.Bank.Proxy;
 import com.example.Players.Players;
 import com.example.Players.PlayersType;
+import com.example.Service.ClientService;
 import com.example.Service.ServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -32,13 +32,19 @@ public class Main {
 
  Scanner scan = new Scanner(System.in);
 
-    int withdraw;
+    Double withdraw;
     @Autowired
     ServiceInterface ServiceInterface;
-
+    @Autowired
+    ClientService clientService;
     @PostConstruct
     public void showMenu() {
         int choice = 0;
+
+        Random rand = new Random();
+        List<com.example.Bank.Client> clients = clientService.findAll();
+        Client client = clients.get(rand.nextInt(clients.size()));
+
         while (choice != 5) {
             int i = 0;
             System.out.println("Welcome to football club Liverpool!");
@@ -50,6 +56,8 @@ public class Main {
             choice = scan.nextInt();
 
             switch (choice) {
+
+
                 case 1: {
                     System.out.println("Choose one: ");
                     System.out.println("1.On rent ");
@@ -100,7 +108,7 @@ public class Main {
                     System.out.println("The ticket cost 20$");
                     System.out.println("To buy a ticket go to ATM system");
 
-                    System.out.println("Welcome to ATM " );
+                    System.out.println("Welcome to ATM " + client.getName() );
                     System.out.println("1.Withdraw");
                     System.out.println("2.Check Balance");
                     System.out.println("3.EXIT");
@@ -114,18 +122,20 @@ public class Main {
                         case 1:
                             System.out.print("Enter money to be withdrawn:");
 
-                            withdraw = scan.nextInt();
-                           // Bank.withdraw(withdraw);
+                            withdraw = scan.nextDouble();
+
+                            clientService.withdraw((com.example.Bank.Client) client,withdraw);
 
                             break;
                         case 2:
 
-                            System.out.println("Balance : ");
+                            System.out.println("Balance : " + client.getCash());
+
 
                             System.out.println("");
 
                             break;
-                        case 4:
+                        case 3:
 
                             System.exit(0);
                     }
