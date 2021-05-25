@@ -1,0 +1,20 @@
+package net.alterapp.miniproject3.controller.Response;
+
+public class AuthenticationResponse {
+    private String token;
+
+    public AuthenticationResponse(String token) {
+        this.token = token;
+    }
+
+    public AuthenticationResponse() {
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+}
